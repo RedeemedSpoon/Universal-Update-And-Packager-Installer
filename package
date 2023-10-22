@@ -8,7 +8,7 @@ error_message() {
 }
 
 if [ $# -eq 0 ]; then
-    echo "Usage: $0 package1 package2 package3 ..."
+    echo "Usage: package package1 package2 package3 ..."
     exit 1
 fi
 
