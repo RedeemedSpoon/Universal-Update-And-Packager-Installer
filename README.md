@@ -56,13 +56,13 @@ package *** #The name of your package
 2. Change to the repository directory:
 
    ```bash
-   cd Universal-Update-Packager-Installer
+   cd Universal-Update-And-Packager-Installer
    ```
 
 3. Make sure the scripts have execute permissions:
 
    ```bash
-   chmod 755 *
+   chmod 755 package update
    ```
 
 4. Move the scripts to /usr/bin using the sudo command, which requires administrative privileges:
