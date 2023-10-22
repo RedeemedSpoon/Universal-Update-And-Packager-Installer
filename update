@@ -1,0 +1,64 @@
+#!/bin/bash
+
+echo "Upgrading to the recent version..."
+sleep 0.5
+
+while true; do
+    sudo -l
+    if [ $? -eq 0 ]; then
+        break
+    fi
+done
+
+package_manager=""
+
+if [ -f /etc/apt/sources.list ]; then
+    package_manager="apt"
+elif [ -f /etc/yum.conf ]; then
+    package_manager="yum"
+elif [ -f /etc/dnf/dnf.conf ]; then
+    package_manager="dnf"
+elif [ -f /etc/zypp/zypp.conf ]; then
+    package_manager="zypper"
+elif [ -f /etc/pacman.conf ]; then
+    package_manager="pacman"
+elif [ -d /usr/portage ]; then
+    package_manager="portage"
+elif [ -d /nix ]; then
+    package_manager="nix"
+else
+    echo "No supported package manager found on this system."
+    exit 1
+fi
+
+echo "Using package manager: $package_manager"
+
+case $package_manager in
+    "apt")
+        sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
+        ;;
+    "yum")
+        sudo yum update -y
+        ;;
+    "dnf")
+        sudo dnf update -y && sudo dnf upgrade -y && sudo dnf autoremove -y
+        ;;
+    "zypper")
+        sudo zypper refresh && sudo zypper update -y
+        ;;
+    "pacman")
+        sudo pacman -Syu --noconfirm && sudo pacman -Rns $(pacman -Qdtq) --noconfirm
+        ;;
+    "portage")
+        sudo emerge --sync && sudo emerge --update --deep --with-bdeps=y @world
+        ;;
+    "nix")
+        sudo nix-channel --update && sudo nix-env -u '*' --always
+        ;;
+    *)
+        echo "Sorry! Unsupported package manager: $package_manager"
+        exit 1
+        ;;
+esac
+
+echo "The update/upgrade is completely finished, thanks for your time!"
