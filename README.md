@@ -68,7 +68,7 @@ package *** #The name of your package
 4. Move the scripts to /usr/bin using the sudo command, which requires administrative privileges:
 
    ```bash
-   sudo mv * /usr/bin/
+   sudo mv update package /usr/bin/
    ```
 5. Run the desired script as described above.
 
