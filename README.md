@@ -56,7 +56,7 @@ package *** #The name of your package
 2. Change to the repository directory:
 
    ```bash
-   cd Universal-Update-Packager-Installer-main
+   cd Universal-Update-Packager-Installer
    ```
 
 3. Make sure the scripts have execute permissions:
