@@ -50,7 +50,7 @@ package *** #The name of your package
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/RedeemedSpoon/Universal-Update-Packager-Installer.git
+   git clone https://github.com/RedeemedSpoon/Universal-Update-And-Packager-Installer.git
    ```
 
 2. Change to the repository directory:
