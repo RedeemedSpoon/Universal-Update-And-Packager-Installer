@@ -1,91 +1,91 @@
 #!/bin/bash
 
 error_message() {
-    if [ ! $? -eq 0 ]; then
-        echo "Sorry, $packages does not exist!"
-        exit 1
-    fi
+	if [ ! $? -eq 0 ]; then
+		echo "Sorry, $packages does not exist!"
+		exit 1
+	fi
 }
 
 if [ $# -eq 0 ]; then
-    echo "Usage: package package1 package2 package3 ..."
-    exit 1
+	echo "Usage: <package1> <package2> ..."
+	exit 1
 fi
 
 for package in "$@"; do
-    command -v $package >/dev/null
+	command -v $package >/dev/null
 
-    if [ $? -eq 0 ]; then
-        echo "$package is already installed!"
-    else
-        while true; do
-            sudo -l
-            if [ $? -eq 0 ]; then
-                break
-            fi
-        done
+	if [ $? -eq 0 ]; then
+		echo "$package is already installed!"
+	else
+		while true; do
+			sudo -l
+			if [ $? -eq 0 ]; then
+				break
+			fi
+		done
 
-        echo "Looking for $package..."
-        sleep 1
+		echo "Looking for $package..."
+		sleep 1
 
-        package_manager=""
+		package_manager=""
 
-        if [ -f /etc/apt/sources.list ]; then
-            package_manager="apt"
-        elif [ -f /etc/yum.conf ]; then
-            package_manager="yum"
-        elif [ -f /etc/dnf/dnf.conf ]; then
-            package_manager="dnf"
-        elif [ -f /etc/zypp/zypp.conf ]; then
-            package_manager="zypper"
-        elif [ -f /etc/pacman.conf ]; then
-            package_manager="pacman"
-        elif [ -d /usr/portage ]; then
-            package_manager="portage"
-        elif [ -d /nix ]; then
-            package_manager="nix"
-        else
-            echo "No supported package manager found on this system."
-            exit 1
-        fi
+		if [ -f /etc/apt/sources.list ]; then
+			package_manager="apt"
+		elif [ -f /etc/yum.conf ]; then
+			package_manager="yum"
+		elif [ -f /etc/dnf/dnf.conf ]; then
+			package_manager="dnf"
+		elif [ -f /etc/zypp/zypp.conf ]; then
+			package_manager="zypper"
+		elif [ -f /etc/pacman.conf ]; then
+			package_manager="pacman"
+		elif [ -d /usr/portage ]; then
+			package_manager="portage"
+		elif [ -d /nix ]; then
+			package_manager="nix"
+		else
+			echo "No supported package manager found on this system."
+			exit 1
+		fi
 
-        echo "Using package manager: $package_manager"
+		echo "Using package manager: $package_manager"
 
-        case $package_manager in
-            "apt")
-                sudo apt update && sudo apt install -y $package
-                error_message
-                ;;
-            "yum")
-                sudo yum install -y $package
-                error_message
-                ;;
-            "dnf")
-                sudo dnf install -y $package
-                error_message
-                ;;
-            "zypper")
-                sudo zypper install -y $package
-                error_message
-                ;;
-            "pacman")
-                sudo pacman -Syu --noconfirm && sudo pacman -S --noconfirm $package
-                error_message
-                ;;
-            "portage")
-                sudo emerge $package
-                error_message
-                ;;
-            "nix")
-                sudo nix-env -iA nixpkgs.$package
-                error_message
-                ;;
-            *)
-                echo "Unsupported package manager: $package_manager"
-                exit 1
-                ;;
-        esac
+		case $package_manager in
+		"apt")
+			sudo apt update && sudo apt install -y $package
+			error_message
+			;;
+		"yum")
+			sudo yum install -y $package
+			error_message
+			;;
+		"dnf")
+			sudo dnf install -y $package
+			error_message
+			;;
+		"zypper")
+			sudo zypper install -y $package
+			error_message
+			;;
+		"pacman")
+			sudo pacman -Syu --noconfirm && sudo pacman -S --noconfirm $package
+			error_message
+			;;
+		"portage")
+			sudo emerge $package
+			error_message
+			;;
+		"nix")
+			sudo nix-env -iA nixpkgs.$package
+			error_message
+			;;
+		*)
+			echo "Unsupported package manager: $package_manager"
+			exit 1
+			;;
+		esac
 
-        echo "$package is now installed!"
-    fi
+		echo "$package is now installed!"
+	fi
 done

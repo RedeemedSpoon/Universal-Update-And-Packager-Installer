@@ -70,6 +70,7 @@ package *** #The name of your package
    ```bash
    sudo mv update package /usr/bin/
    ```
+
 5. Run the desired script as described above.
 
 ## Contributing
